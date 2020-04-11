@@ -7,26 +7,31 @@ import {
 
 import AuthGuardRedirect from './app/components/AuthGuardRedirect';
 import AuthGuard from './app/components/AuthGuard';
-import AuthLayout from './app/layout/AuthLayout';
+import AuthLayoutContainer from './app/layout/AuthLayout';
 import TaskTrackerLayout from './app/layout/TaskTrackerLayout';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootswatch/dist/yeti/bootstrap.min.css';
 import './App.css';
 
 function App() {
-  return <Router>
-    <Switch>
-      <Route path="/auth">
-        <AuthLayout />
-      </Route>
-      <Route path="/app">
-        <AuthGuard unauthorizedRedirect="/auth" >
-          <TaskTrackerLayout />
-        </AuthGuard>
-      </Route>
-      <Route path="/">
-        <AuthGuardRedirect positive="/app" negative="/auth" />
-      </Route>
-    </Switch>
-  </Router>
+  return <div className="mrocket-app">
+    <Router>
+      <Switch>
+        <Route path="/auth">
+          <AuthLayoutContainer />
+        </Route>
+        <Route path="/app">
+          <AuthGuard unauthorizedRedirect="/auth" >
+            <TaskTrackerLayout />
+          </AuthGuard>
+        </Route>
+        <Route exact path="/">
+          <AuthGuardRedirect positive="/app" negative="/auth" />
+        </Route>
+      </Switch>
+    </Router>
+  </div>
 }
 
 export default App;
