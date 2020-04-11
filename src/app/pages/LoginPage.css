@@ -1,0 +1,13 @@
+.login-content-card {
+  height: 100%;
+}
+
+.login-content-card .card-header,
+.login-content-card .card-footer
+ {
+  flex: 0;
+}
+
+.login-content-card .card-body {
+  flex: 1;
+}
