@@ -1,6 +1,7 @@
 import * as firebase from 'firebase';
 import { FirebaseService } from "./firebase-service";
 import { EventEmitter } from "./event-emitter";
+import { FirestoreService } from './firestore-service';
 
 type FirebaseUser = firebase.User | null;
 
@@ -15,6 +16,7 @@ export class AuthService {
     });
 
     this.auth.onAuthStateChanged(user => {
+      console.log('[onAuthStateChanged]', user?.email);
       this.currentUser = user;
       this.authState$.emit(user);
     });
@@ -38,6 +40,16 @@ export class AuthService {
 
   login({ email, password }: { email: string, password: string }) {
     return this.auth.signInWithEmailAndPassword(email, password);
+  }
+
+  register(user: Partial<FirebaseUser> & { password: string, email: string }) {
+    return this.auth
+      .createUserWithEmailAndPassword(user.email, user.password)
+      .then(res => {
+        const userProfile = { ...user, uid: res.user?.uid };
+        delete userProfile.password;
+        return FirestoreService.Instance.createUserProfile(userProfile);
+      });
   }
 
   static Instance = new AuthService();
