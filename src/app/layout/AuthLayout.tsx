@@ -34,24 +34,16 @@ function AuthLayoutContainer(props: AuthLayoutContainerProps) {
   const { path } = useRouteMatch();
 
   return (
-    <Router>
-      <AuthLayout>
-        <Switch>
-          <Route exact path={`${ path }/login`}>
-            <LoginPage />
-          </Route>
-          <Route exact path={`${ path }/register`}>
-            <RegisterPage />
-          </Route>
-          <Route exact path={`${ path }/success`}>
-            <RegisterSuccessPage />
-          </Route>
-          <Route exact path={path}>
-            <Redirect to={`${ path }/login`}></Redirect>
-          </Route>
-        </Switch>
-      </AuthLayout>
-    </Router>
+    <AuthLayout>
+      <Switch>
+        <Route exact path={`${ path }/login`} component={ LoginPage } />
+        <Route exact path={`${ path }/register`} component={ RegisterPage } />
+        <Route exact path={`${ path }/success`} component={ RegisterSuccessPage } />
+        <Route exact path={path}>
+          <Redirect to={`${ path }/login`}></Redirect>
+        </Route>
+      </Switch>
+    </AuthLayout>
   );
 }
 
