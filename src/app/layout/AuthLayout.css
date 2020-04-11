@@ -21,10 +21,16 @@
 }
 
 .auth-content {
+  display: flex;
+  flex-direction: column;
   width: 360px;
-  height: 460px;
+  min-height: 460px;
   margin-left: auto;
   margin-right: auto;
   background-color: #ffffff;
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.auth-content > *:first-child {
+  flex-grow: 1;
 }
