@@ -1,13 +1,19 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+
 import './AuthLayout.css';
 
-export type AuthLayoutProps = {};
+export type AuthLayoutProps = unknown;
 
-function AuthLayout(props: React.PropsWithChildren<AuthLayoutProps>) {
+export function AuthLayout(props: AuthLayoutProps) {
   return (
     <div>
       <pre>AuthLayout</pre>
-      {props.children}
+      
     </div>
   );
 }
