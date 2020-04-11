@@ -14,5 +14,9 @@ export class FirebaseService {
     return this.app.auth();
   }
 
+  public getFirestore() {
+    return this.app.firestore();
+  }
+
   static Instance = new FirebaseService(CONFIG['webapp_firebase_config']);
 }
