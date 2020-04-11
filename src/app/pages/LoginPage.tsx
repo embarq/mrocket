@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import './LoginPage.css';
 import { AuthService } from '../lib/auth-service';
+import FormField from '../components/FormField';
 import Alert from '../components/Alert';
 
 interface LoginPageState {
@@ -80,33 +81,33 @@ function LoginPage() {
       </div>
       <div className="card-body flex-1 pb-1">
         <fieldset className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
+          <FormField
             id="email"
-            autoComplete="off"
+            type="email"
+            label="Email"
+            autoComplete={false}
             placeholder="example@org.com"
-            className="form-control"
             disabled={loginPageState.loading}
-            onChange={trackFieldChange('email')}/>
+            onChange={trackFieldChange('email')}
+            tabIndex={1} />
         </fieldset>
         <fieldset className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
+          <FormField
             id="password"
-            autoComplete="off"
+            type="password"
+            label="Password"
+            autoComplete={false}
             placeholder="••••••••"
-            className="form-control"
             disabled={loginPageState.loading}
-            onChange={trackFieldChange('password')}/>
+            onChange={trackFieldChange('password')}
+            tabIndex={2} />
         </fieldset>
         {maybeShowLoginErrorAlert(loginPageState.loadingError)}
       </div>
       <div className="card-footer pt-0 bg-white border-0">
         <div className="d-flex justify-content-between">
-          <Link to="/auth/register" className="btn btn-info">Register</Link>
-          <button onClick={handleLoginSubmit} type="submit" className="btn btn-primary">
+          <Link to="/auth/register" className="btn btn-info" tabIndex={4}>Register</Link>
+          <button onClick={handleLoginSubmit} type="submit" className="btn btn-primary" tabIndex={3}>
             Login
             { loginPageState.loading &&
               <span className="spinner-border spinner-border-sm ml-2" role="status"></span> }
