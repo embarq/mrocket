@@ -11,3 +11,7 @@
 .mrocket-app .alert-white {
   background-color: #fff;
 }
+
+.mrocket-app .bg-info {
+  background-color: #d187ff !important;
+}

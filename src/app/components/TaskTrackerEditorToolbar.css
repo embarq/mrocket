@@ -1,0 +1,10 @@
+#new-todo-control.new-todo-control {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+#new-todo-control.new-todo-control:focus {
+  box-shadow: none;
+  border-color: #d187ff;
+}

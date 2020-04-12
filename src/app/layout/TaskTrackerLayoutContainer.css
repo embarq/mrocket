@@ -4,7 +4,7 @@
   --bg-grad-stop-2: rgba(0,0,0,0);
 
   height: 100%;
-  padding-top: 25vh;
+  padding-top: 20vh;
 
   background: #d187ff;
   background: linear-gradient(
@@ -29,6 +29,10 @@
   margin-right: auto;
   background-color: #ffffff;
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.app-content.toolbar-content {
+  min-height: auto;
 }
 
 @media screen and (max-width: 375px) {
