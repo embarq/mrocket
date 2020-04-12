@@ -15,7 +15,9 @@ export interface FormFieldProps {
   disabled?: boolean;
   /** @default false */
   readonly?: boolean;  // TODO: implement
+  hint?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyUp?: (event: React.KeyboardEvent) => void;
   config?: Partial<FormFieldProps>;
 }
 
@@ -30,8 +32,10 @@ function FormField(props: FormFieldProps) {
     placeholder: '',
     disabled: false,
     readonly: false,
+    hint: '',
     tabIndex: undefined,
-    onChange: () => {}
+    onChange: () => {},
+    onKeyUp: () => {}
   }
   const finalProps: FormFieldProps = { ...defaultProps, ...props.config, ...props };
 
@@ -51,6 +55,18 @@ function FormField(props: FormFieldProps) {
     }
   }
 
+  const handleFormFieldKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      (event.target as HTMLInputElement).blur();
+    }
+
+    if (typeof finalProps.onKeyUp === 'function') {
+      finalProps.onKeyUp(event);
+    }
+  }
+
+  const isEmptyField = controlValue.trim().length === 0;
+
   return <React.Fragment>
     {finalProps.label && <label htmlFor={finalProps.id}>{finalProps.label}</label>}
     <input
@@ -63,7 +79,9 @@ function FormField(props: FormFieldProps) {
       value={controlValue}
       tabIndex={finalProps.tabIndex}
       readOnly={finalProps.readonly}
-      onChange={handleControlChange} />
+      onChange={handleControlChange}
+      onKeyUp={handleFormFieldKeyUp} />
+    {finalProps.hint && !isEmptyField && <small className="px-2 text-muted">{finalProps.hint}</small>}
   </React.Fragment>
 }
 
