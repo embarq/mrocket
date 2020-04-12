@@ -8,6 +8,7 @@ import {
 
 import TaskTrackerPage from '../pages/TaskTrackerPage';
 import TaskTrackerEditorPage from '../pages/TaskTrackerEditorPage';
+import AppHeader from '../components/AppHeader';
 import './TaskTrackerLayoutContainer.css';
 
 export type TaskTrackerLayoutProps = {
@@ -16,13 +17,16 @@ export type TaskTrackerLayoutProps = {
 
 function TaskTrackerLayout(props: TaskTrackerLayoutProps) {
   return (
-    <div className="app-main-wrapper">
-      <div className="container">
-        <div className="app-content">
-          {props.children}
+    <React.Fragment>
+      <AppHeader />
+      <main className="app-main-wrapper">
+        <div className="container">
+          <div className="app-content">
+            {props.children}
+          </div>
         </div>
-      </div>
-    </div>
+      </main>
+    </React.Fragment>
   );
 }
 

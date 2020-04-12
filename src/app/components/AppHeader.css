@@ -1,0 +1,46 @@
+#app-header.container {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#app-header .navbar-nav {
+  flex-direction: row;
+}
+
+#app-header .navbar-nav .nav-item + .nav-item {
+  padding-left: 1rem;
+}
+
+#app-header .navbar-brand,
+#app-header .navbar-nav .nav-link {
+  color: #fff;
+  font-size: 1rem;
+}
+
+#app-header .navbar-brand {
+  font-size: 1.25rem;
+  transition: all ease-in-out 100ms;
+}
+
+#app-header .navbar-brand:hover {
+  transform: scale(0.95);
+}
+
+#app-header .navbar-nav .nav-link {
+  font-weight: bold;
+}
+
+#app-header .navbar-nav .nav-link:hover {
+  text-decoration: underline;
+}
+
+#app-header .navbar-nav .btn-add {
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+
+#app-header .navbar-nav .btn-add:hover {
+  text-decoration: none;
+  transform: scale(1.2);
+}

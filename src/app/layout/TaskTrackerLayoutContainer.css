@@ -23,12 +23,30 @@
 .app-content {
   display: flex;
   flex-direction: column;
-  width: 360px;
+  width: 50vw;
   min-height: 460px;
   margin-left: auto;
   margin-right: auto;
   background-color: #ffffff;
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+@media screen and (max-width: 375px) {
+  .app-content {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 375px) and (max-width: 480px) {
+  .app-content {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px)  {
+  .app-content {
+    width: 75vw;
+  }
 }
 
 .app-content > *:first-child {
