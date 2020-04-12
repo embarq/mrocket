@@ -9,7 +9,7 @@ import {
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import RegisterSuccessPage from '../pages/RegisterSuccessPage';
-import './AuthLayout.css';
+import './AuthLayoutContainer.css';
 
 interface AuthLayoutProps {
   children: React.ReactNode

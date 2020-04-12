@@ -1,0 +1,36 @@
+.app-main-wrapper {
+  --bg-grad-stop-0: #d187ff;
+  --bg-grad-stop-1: #2eadf2;
+  --bg-grad-stop-2: rgba(0,0,0,0);
+
+  height: 100%;
+  padding-top: 25vh;
+
+  background: #d187ff;
+  background: linear-gradient(
+    to bottom,
+    var(--bg-grad-stop-0) 0%,
+    var(--bg-grad-stop-1) 35%,
+    var(--bg-grad-stop-2) 35%,
+    var(--bg-grad-stop-2) 100%
+  );  
+}
+
+.app-main-wrapper > .container {
+  height: 100%;
+}
+
+.app-content {
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+  min-height: 460px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.app-content > *:first-child {
+  flex-grow: 1;
+}

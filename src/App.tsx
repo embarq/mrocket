@@ -7,8 +7,8 @@ import {
 
 import AuthGuardRedirect from './app/components/AuthGuardRedirect';
 import AuthGuard from './app/components/AuthGuard';
-import AuthLayoutContainer from './app/layout/AuthLayout';
-import TaskTrackerLayout from './app/layout/TaskTrackerLayout';
+import AuthLayoutContainer from './app/layout/AuthLayoutContainer';
+import TaskTrackerLayoutContainer from './app/layout/TaskTrackerLayoutContainer';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootswatch/dist/yeti/bootstrap.min.css';
@@ -23,7 +23,7 @@ function App() {
         </Route>
         <Route path="/app">
           <AuthGuard unauthorizedRedirect="/auth" >
-            <TaskTrackerLayout />
+            <TaskTrackerLayoutContainer />
           </AuthGuard>
         </Route>
         <Route exact path="/">
