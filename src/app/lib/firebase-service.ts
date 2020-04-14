@@ -8,6 +8,7 @@ export class FirebaseService {
 
   constructor(appConfig: any) {
     this.app = firebase.initializeApp(appConfig);
+    this.app.firestore().enablePersistence();
   }
 
   public getFirebaseTimestamp() {

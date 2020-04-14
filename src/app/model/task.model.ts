@@ -12,3 +12,5 @@ export interface Task {
   completed: boolean;
   dueDate: number | null; // as timestamp
 }
+
+export type TaskResource = Task & TaskMetadata;
