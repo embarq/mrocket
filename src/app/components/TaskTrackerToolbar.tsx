@@ -24,7 +24,7 @@ function TaskTrackerToolbar() {
         </div>
       </div>
       <div className="progress bg-transparent" style={{height: '4px'}}>
-        <div className="progress-bar bg-info" role="progressbar" style={{width: '25%'}} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}></div>
+        <div className="progress-bar bg-app-primary" role="progressbar" style={{width: '25%'}} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}></div>
       </div>
     </div>
   );
