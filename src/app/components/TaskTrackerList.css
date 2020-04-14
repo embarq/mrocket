@@ -1,0 +1,12 @@
+.task-tracker-list-item + .task-tracker-list-item {
+  margin-top: 1rem;
+}
+
+.task-tracker-list-item {
+  color: var(--dark);
+  transition: color 150ms ease-in-out;
+}
+
+.task-tracker-list-item:hover {
+  color: #c261ff;
+}

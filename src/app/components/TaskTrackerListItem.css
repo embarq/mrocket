@@ -1,0 +1,30 @@
+@import url('https://css.gg/trash.css');
+
+.task-tracker-list-item-remove {
+  --default-icon-color: #ddd;
+}
+
+.task-tracker-list-item-remove .gg-trash {
+  box-shadow: 0 0 0 2px var(--default-icon-color), inset -2px 0 0 var(--default-icon-color), inset 2px 0 0 var(--default-icon-color);
+  transition: box-shadow 100ms ease-in;
+}
+.task-tracker-list-item-remove .gg-trash::before {
+  border-color: var(--default-icon-color);
+  transition: border-color 100ms ease-in;
+}
+.task-tracker-list-item-remove .gg-trash::after {
+  background-color: var(--default-icon-color);
+  transition: background-color 100ms ease-in;
+}
+
+.task-tracker-list-item-remove:hover .gg-trash {
+  box-shadow: 0 0 0 2px var(--danger), inset -2px 0 0 var(--danger), inset 2px 0 0 var(--danger);
+}
+
+.task-tracker-list-item-remove:hover .gg-trash::before {
+  border-color: var(--danger);
+}
+
+.task-tracker-list-item-remove:hover .gg-trash::after {
+  background-color: var(--danger);
+}
