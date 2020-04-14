@@ -9,5 +9,5 @@ export const isValidString = (value: any): value is string => {
 export const isPromise = <T = unknown>(value: any): value is Promise<T> => isFunction(value.then);
 
 export const createId = (payload: any) => {
-  return window.btoa(JSON.stringify(payload)).replace(/=/g, '').slice(0, 32);
+  return window.btoa(JSON.stringify(payload)).replace(/=/g, '').slice(-32);
 }
