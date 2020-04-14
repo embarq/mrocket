@@ -1,9 +1,27 @@
 import React, { useState } from 'react';
 
+import './FormField.css';
+
+type ControlProps = {
+  [key: string]: any;
+}
+
+function Control(props: ControlProps) {
+  const { controlType, controlProps } = props;
+
+  switch (controlType) {
+    case 'textarea': return <textarea {...controlProps} />
+    case 'select': return <select {...controlProps} />
+    case 'input':
+    default: return <input {...controlProps} />
+  }
+}
+
 export interface FormFieldProps {
   id: string;
   /** @default 'text' */
   type?: string;
+  controlType?: 'input' | 'textarea' | 'select';
   className?: string;
   tabIndex?: number;
   value?: any;
@@ -24,8 +42,11 @@ export interface FormFieldProps {
 function FormField(props: FormFieldProps) {
   const [controlValue, setControlValue] = useState('');
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const [isLabelActive, setLabelActive] = useState(false);
+
   const defaultProps: Partial<FormFieldProps> = {
     type: 'text',
+    controlType: 'input',
     className: '',
     label: '',
     autoComplete: false,
@@ -65,22 +86,36 @@ function FormField(props: FormFieldProps) {
     }
   }
 
+  const handleControlFocus = () => setLabelActive(true);
+  const handleControlBlur = () => setLabelActive(false);
+
   const isEmptyField = controlValue.trim().length === 0;
+  const controlProps = {
+    type: finalProps.type,
+    id: finalProps.id,
+    autoComplete: finalProps.autoComplete ? 'on' : 'off',
+    placeholder: finalProps.placeholder,
+    className: `form-control ${ finalProps.className }`,
+    disabled: finalProps.disabled,
+    value: controlValue,
+    tabIndex: finalProps.tabIndex,
+    readOnly: finalProps.readonly,
+    onChange: handleControlChange,
+    onKeyUp: handleFormFieldKeyUp,
+    onFocus: handleControlFocus,
+    onBlur: handleControlBlur
+  };
 
   return <React.Fragment>
-    {finalProps.label && <label htmlFor={finalProps.id}>{finalProps.label}</label>}
-    <input
-      type={finalProps.type}
-      id={finalProps.id}
-      autoComplete={finalProps.autoComplete ? 'on' : 'off'}
-      placeholder={finalProps.placeholder}
-      className={`form-control${ ' ' + finalProps.className }`}
-      disabled={finalProps.disabled}
-      value={controlValue}
-      tabIndex={finalProps.tabIndex}
-      readOnly={finalProps.readonly}
-      onChange={handleControlChange}
-      onKeyUp={handleFormFieldKeyUp} />
+    {
+      finalProps.label
+      && <label
+          htmlFor={finalProps.id}
+          className={isLabelActive ? 'active' : ''}>
+          {finalProps.label}
+        </label>
+    }
+    <Control controlType={finalProps.controlType} controlProps={controlProps} />
     {finalProps.hint && !isEmptyField && <small className="px-2 text-muted">{finalProps.hint}</small>}
   </React.Fragment>
 }
