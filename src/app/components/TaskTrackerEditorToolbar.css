@@ -1,4 +1,4 @@
-#new-todo-control.new-todo-control {
+/* #new-todo-control.new-todo-control {
   border-left: none;
   border-right: none;
   border-top: none;
@@ -6,5 +6,14 @@
 
 #new-todo-control.new-todo-control:focus {
   box-shadow: none;
-  border-color: #d187ff;
+  border-color: var(--app-primary);;
+} */
+
+#new-todo-control ~ .spinner-border {
+  border-color: var(--app-primary);
+  border-right-color: transparent;
+  position: absolute;
+  right: 1.6rem;
+  top: 2rem;
+  z-index: 2;
 }
