@@ -1,3 +1,7 @@
+:root {
+  --app-primary: #d187ff;  
+}
+
 .mrocket-app {
   display: block;
   height: 100vh;
@@ -8,10 +12,18 @@
   border: none;
 }
 
+.mrocket-app .btn-white {
+  background: #fff;
+}
+
 .mrocket-app .alert-white {
   background-color: #fff;
 }
 
-.mrocket-app .bg-info {
-  background-color: #d187ff !important;
+.mrocket-app .bg-app-primary {
+  background-color: var(--app-primary) !important;
+}
+
+.mrocket-app .text-app-primary {
+  color: var(--app-primary) !important;
 }

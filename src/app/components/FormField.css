@@ -1,0 +1,27 @@
+label {
+  color: inherit;
+  transition: color 100s ease-in-out;
+}
+
+label.active {
+  color: var(--app-primary) !important;
+}
+
+input.form-control,
+textarea.form-control {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+textarea.form-control {
+  min-height: 3rem;
+  resize: vertical;
+}
+
+input.form-control:focus,
+textarea.form-control:focus {
+  box-shadow: none;
+  border-color: var(--app-primary);
+  border-width: 1px;
+}
