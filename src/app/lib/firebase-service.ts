@@ -10,6 +10,10 @@ export class FirebaseService {
     this.app = firebase.initializeApp(appConfig);
   }
 
+  public getFirebaseTimestamp() {
+    return firebase.firestore.Timestamp;
+  }
+
   public getAuth() {
     return this.app.auth();
   }
