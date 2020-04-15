@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import { auth } from 'firebase/app';
 import { FirebaseService } from "./firebase-service";
 import { EventEmitter } from "./event-emitter";
 import { FirestoreService } from './firestore-service';
@@ -11,7 +11,7 @@ export class AuthService {
   private authState$ = new EventEmitter<FirebaseUser>();
 
   constructor() {
-    this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err => {
+    this.auth.setPersistence(auth.Auth.Persistence.LOCAL).catch(err => {
       console.error(err);
     });
 
@@ -39,7 +39,15 @@ export class AuthService {
   }
 
   login({ email, password }: { email: string, password: string }) {
-    return this.auth.signInWithEmailAndPassword(email, password);
+    return this.auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => FirebaseService.Instance.getFirestore().enablePersistence());
+  }
+
+  logout() {
+    return this.auth
+      .signOut()
+      .then(() => FirebaseService.Instance.getFirestore().clearPersistence())
   }
 
   register(user: Partial<FirebaseUser> & { password: string, email: string }) {

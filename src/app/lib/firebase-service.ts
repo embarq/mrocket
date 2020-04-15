@@ -1,4 +1,7 @@
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+
 import * as CONFIG from '../../.runtimeconfig.json';
 
 type FirebaseApp = firebase.app.App;
@@ -8,7 +11,6 @@ export class FirebaseService {
 
   constructor(appConfig: any) {
     this.app = firebase.initializeApp(appConfig);
-    this.app.firestore().enablePersistence();
   }
 
   public getFirebaseTimestamp() {
