@@ -1,8 +1,8 @@
 export interface TaskMetadata {
   id: string;
-  createdAt: number;      // as timestamp
-  updatedAt: number;      // as timestamp
-  completedAt: number;    // as timestamp
+  createdAt: number | firebase.firestore.Timestamp;      // as timestamp
+  updatedAt: number | firebase.firestore.Timestamp;      // as timestamp
+  completedAt: number | firebase.firestore.Timestamp | null;    // as timestamp
   createdBy: string;
 }
 

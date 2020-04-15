@@ -1,14 +1,20 @@
 import React from 'react';
+
 import './TaskTrackerPage.css';
 
-export type TaskTrackerPageProps = {};
+import TaskTrackerLayout from '../layout/TaskTrackerLayout';
+import TaskTrackerToolbar from '../components/TaskTrackerToolbar';
+import TaskTrackerContainer from '../components/TaskTrackerContainer';
 
-function TaskTrackerPage(props: React.PropsWithChildren<TaskTrackerPageProps>) {
+function TaskTrackerPage() {  
   return (
-    <div>
-      <pre>TaskTrackerPage</pre>
-      {props.children}
-    </div>
+    <TaskTrackerLayout toolbarChildren={<TaskTrackerToolbar />}>
+      <div className="card">
+        <div className="card-body">
+          <TaskTrackerContainer />
+        </div>
+      </div>
+    </TaskTrackerLayout>
   );
 }
 

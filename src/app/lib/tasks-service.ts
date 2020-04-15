@@ -1,7 +1,7 @@
 import { FirebaseService } from "./firebase-service";
 import { Task, TaskResource } from "../model/task.model";
 import { AuthService } from "./auth-service";
-import { createId } from "./utils";
+import { QueryChangeObserver } from './firestore-query-observer';
 
 export class TasksService {
   private readonly collection = 'tasks';
@@ -10,60 +10,56 @@ export class TasksService {
   private auth = AuthService.Instance;
 
   upsertTask(task: Task) {
-    const uid = this.auth.getCurrentUser()?.uid;
     const taskPayload = {
       ...task,
-      id: createId({ uid, t: this.auth.getCurrentUser()?.refreshToken }),
       createdAt: FirebaseService.Instance.getFirebaseTimestamp().now(),
       updatedAt: FirebaseService.Instance.getFirebaseTimestamp().now(),
-      completedAt: null,
-      createdBy: this.auth.getCurrentUser()?.uid
+      createdBy: this.auth.getCurrentUser()?.uid,
+      completedAt: null
     }
 
     return this.firestore
       .collection(this.collection)
       .add(taskPayload)
-      .then(snap => ({ taskId: taskPayload.id }))
+      .then(snap => {
+        return this.firestore
+          .collection(this.collection)
+          .doc(snap.id)
+          .update({ id: snap.id })
+          .then(() => ({ taskId: snap.id }))
+      })
   }
 
-  /**
-   * @returns "unsubscribe" function
-   */
-  getTasks(handler: (tasks: TaskResource[]) => void) {
-    const currentUserId = this.auth.getCurrentUser()?.uid;
-    const query = this.firestore.collection(this.collection).where('createdBy', '==', currentUserId);
-    
-    return query.onSnapshot(snap => {
-      const docs = snap.docs.map(doc => doc.data());
-      handler(docs as TaskResource[]);
-    });
-  }
+  updateTask(id: string, payload: Partial<Task>) {
+    const timestampNow = FirebaseService.Instance.getFirebaseTimestamp().now();
+    const update: Partial<TaskResource> = {
+      ...payload,
+      updatedAt: timestampNow
+    };
 
-  fetchTasks() {
-    const currentUserId = this.auth.getCurrentUser()?.uid;
+    if (payload.completed === true) {
+      update.completedAt = timestampNow;
+    } else if (payload.completed === false) {
+      update.completedAt = null;
+    }
+
     return this.firestore
       .collection(this.collection)
-      .where('createdBy', '==', currentUserId)
-      .get()
-      .then(snap => snap.docs.map(doc => doc.data()) as TaskResource[])
+      .doc(id)
+      .update(payload);
   }
 
-  fetchLocalTasks() {
-    return new Promise((resolve, reject) => {
-      try {
-        const tasks = localStorage.getItem('MROCKET_TASKS');
+  deleteTask(id: string) {
+    return this.firestore
+      .collection(this.collection)
+      .doc(id)
+      .delete();
+  }
 
-        if (tasks == null) {
-          return reject(new Error('Cached tasks not found'));
-        }
-
-        resolve(
-          JSON.parse(tasks || '')
-        );
-      } catch(err) {
-        reject(err);
-      }
-    })
+  onUserTasksChanges() {
+    const currentUserId = this.auth.getCurrentUser()?.uid;
+    const query = this.firestore.collection(this.collection).where('createdBy', '==', currentUserId);
+    return new QueryChangeObserver<TaskResource>(query);
   }
 
   static readonly Instance = new TasksService();
