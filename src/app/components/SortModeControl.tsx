@@ -22,8 +22,8 @@ function SortModeControl(props: SortModeControlProps) {
 
   return (
     <select value={mode} onChange={handleSelectionChange} className="form-control">
-      <option value={SortMode.Descending}>📉Descending</option>
-      <option value={SortMode.Ascending}>📈Ascending</option>
+      <option value={SortMode.Descending}>Descending</option>
+      <option value={SortMode.Ascending}>Ascending</option>
     </select>
   )
 }
