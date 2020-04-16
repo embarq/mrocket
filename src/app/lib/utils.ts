@@ -14,20 +14,14 @@ export const createId = (payload: any) => {
   return window.btoa(JSON.stringify(payload)).replace(/=/g, '').slice(-32);
 }
 
-export const indexedBy = <T>(key: string | ((o: T) => string)) => (values: T[]) => {
+/** @pure */
+export const indexedBy = <T>(key: keyof T) => (values: T[]) => {
   const map: { [_key: string]: T } = {};
   const _values = ([] as T[]).concat(values);
+
   let entry: T;
-
-  if (isFunction(key)) {
-    while(entry = _values.pop() as T) {
-      map[key(entry)] = entry;
-    }
-    return map;
-  }
-
   while(entry = _values.pop() as T) {
-    map[key] = entry;
+    map[(entry as any)[key as string]] = entry;
   }
 
   return map;
