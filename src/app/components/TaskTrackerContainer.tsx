@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { TaskResource } from '../model/task.model';
+import compareDesc from 'date-fns/compareDesc';
+import { TaskResource, RemoteTaskResource } from '../model/task.model';
 import { TasksService } from '../lib/tasks-service';
-import { isFunction } from '../lib/utils';
+import { isFunction, timestampToMilliseconds } from '../lib/utils';
 import { QueryChangeObserver } from '../lib/firestore-query-observer';
 import TaskTrackerList from './TaskTrackerList';
 
@@ -19,7 +20,7 @@ interface TaskTrackerContainerState {
 }
 
 class TaskTrackerContainer extends React.Component<TaskTrackerContainerProps, TaskTrackerContainerState> {
-  private tasksChangesObserver: QueryChangeObserver<TaskResource>;
+  private tasksChangesObserver: QueryChangeObserver<RemoteTaskResource>;
   private unsubscribeTasksChanges: (() => void) | null = null;
   private handleItemComplete: (payload: { id: string; completed: boolean; }) => void;
   private handleItemDelete: (payload: { id: string; }) => void;
@@ -60,8 +61,19 @@ class TaskTrackerContainer extends React.Component<TaskTrackerContainerProps, Ta
     });
   }
 
-  onUserTasksChanges(data: TaskResource[]) {
-    this.setState({ tasks: data });
+  onUserTasksChanges(data: RemoteTaskResource[]) {
+    type Timestamp = firebase.firestore.Timestamp;
+    let tasks: TaskResource[] = data.map(entry => {
+      return {
+        ...entry,
+        createdAt: timestampToMilliseconds(entry.createdAt as Timestamp) as number,
+        updatedAt: timestampToMilliseconds(entry.updatedAt as Timestamp) as number,
+        completedAt: timestampToMilliseconds(entry.completedAt as Timestamp)
+      }
+    });
+
+    tasks = this.sortTasks(tasks);
+    this.setState({ tasks });
   }
 
   render() {
@@ -71,6 +83,12 @@ class TaskTrackerContainer extends React.Component<TaskTrackerContainerProps, Ta
         onDelete={this.handleItemDelete}
         tasks={this.state.tasks} />
     )
+  }
+
+  private sortTasks(tasks: TaskResource[]) {
+    return ([] as TaskResource[]).concat(tasks).sort(
+      (a, b) => compareDesc(a.createdAt, b.createdAt)
+    );
   }
 }
 

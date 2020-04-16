@@ -30,3 +30,7 @@ export const indexedBy = <T>(key: keyof T) => (values: T[]) => {
 export const getDistanceToNow = (date: Date) => {
   return formatDistanceToNow(date);
 }
+
+export const timestampToMilliseconds = (ts: firebase.firestore.Timestamp) => {
+  return (ts != null) ? ts.toMillis() : null;
+}
