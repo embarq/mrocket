@@ -1,5 +1,5 @@
 import { FirebaseService } from "./firebase-service";
-import { Task, TaskResource } from "../model/task.model";
+import { Task, RemoteTaskResource } from "../model/task.model";
 import { AuthService } from "./auth-service";
 import { QueryChangeObserver } from './firestore-query-observer';
 
@@ -32,7 +32,7 @@ export class TasksService {
 
   updateTask(id: string, payload: Partial<Task>) {
     const timestampNow = FirebaseService.Instance.getFirebaseTimestamp().now();
-    const update: Partial<TaskResource> = {
+    const update: Partial<RemoteTaskResource> = {
       ...payload,
       updatedAt: timestampNow
     };
@@ -46,7 +46,7 @@ export class TasksService {
     return this.firestore
       .collection(this.collection)
       .doc(id)
-      .update(payload);
+      .update(update);
   }
 
   deleteTask(id: string) {
@@ -59,7 +59,7 @@ export class TasksService {
   onUserTasksChanges() {
     const currentUserId = this.auth.getCurrentUser()?.uid;
     const query = this.firestore.collection(this.collection).where('createdBy', '==', currentUserId);
-    return new QueryChangeObserver<TaskResource>(query);
+    return new QueryChangeObserver<RemoteTaskResource>(query);
   }
 
   static readonly Instance = new TasksService();
