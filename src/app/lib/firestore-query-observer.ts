@@ -1,6 +1,8 @@
 import { nanoid } from "nanoid";
 import { indexedBy } from "./utils";
-import { TaskResource } from "../model/task.model";
+
+type DocumentChange<T = DocumentData> = firebase.firestore.DocumentChange<T>;
+type DocumentData = firebase.firestore.DocumentData;
 
 type QueryChangesHandlerFn<T> = (data: T[]) => void;
 type QueryChangesHandler<T> = {
@@ -23,7 +25,7 @@ type QueryChangesHandler<T> = {
  * unsubscribe();
  * ```
  */
-export class QueryChangeObserver<T = firebase.firestore.DocumentData> {
+export class QueryChangeObserver<T extends { id: string }> {
   private ready = false;
   private handlers: Array<QueryChangesHandler<T>> = [];
   private currentState: T[] = [];
@@ -65,10 +67,40 @@ export class QueryChangeObserver<T = firebase.firestore.DocumentData> {
       const changes = snap.docChanges();
 
       if (changes.length > 0) {
-        const docs = changes.map(change => change.doc.data());
-        this.handlers.forEach(handler => handler.fn(docs as T[]));
-        console.log('%c[QueryChangeObserver]: onSnapshot', 'color: #777', changes);
+        this.currentState = this.mapChangesToCurrentState(changes);
+        this.handlers.forEach(handler => handler.fn(this.currentState));
       }
     });
+  }
+
+  private mapChangesToCurrentState(changes: DocumentChange<DocumentData>[]) {
+    const entriesMap = this.indexById(this.currentState);
+
+    for (let change of changes) {
+      const docId = change.doc.id;
+
+      switch(change.type) {
+        case 'removed': {
+          delete entriesMap[docId];
+          break;
+        }
+        case 'modified': {
+          entriesMap[docId] = Object.assign(
+            {},
+            entriesMap[docId],
+            change.doc.data()
+          );
+          break;
+        }
+        case 'added': {
+          if (change.doc.data().id == null) {
+            break;
+          }
+          entriesMap[docId] = change.doc.data() as T;
+        }
+      }
+    }
+
+    return Object.values(entriesMap);
   }
 }
