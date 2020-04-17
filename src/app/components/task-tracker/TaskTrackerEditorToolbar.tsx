@@ -3,10 +3,13 @@ import React, { useState } from 'react';
 import FormField from '../shared/FormField';
 import './TaskTrackerEditorToolbar.css';
 import { isValidString, isFunction } from '../../lib/utils';
+import Checkbox from '../shared/Checkbox';
 
 interface TaskTrackerMicroEditorProps {
   loading?: boolean;
   todoTitle?: string | null;
+  todoCompleted?: boolean | null;
+  onComplete?: (completed: boolean) => void;
   onTitleChange?: ((title: string) => void);
   onTaskAdd?: (() => void);
 } 
@@ -14,7 +17,7 @@ interface TaskTrackerMicroEditorProps {
 function TaskTrackerEditorToolbar(props: TaskTrackerMicroEditorProps) {
   const [todoTitle, setTodoTitle] = useState('');
 
-  if (isValidString(props.todoTitle)) {
+  if (!isValidString(todoTitle) && isValidString(props.todoTitle)) {
     setTodoTitle(props.todoTitle);
   }
 
@@ -32,20 +35,39 @@ function TaskTrackerEditorToolbar(props: TaskTrackerMicroEditorProps) {
     }
   }
 
+  const handleCheckboxChange = () => {
+    if (isFunction(props.onComplete)) {
+      props.onComplete(!props.todoCompleted);
+    }
+  }
+
   const loadingSpinnerElem = <span className="spinner-border spinner-border-sm" />;
 
   return (
     <div className="card border-0">
       <div className="card-body">
-        <FormField
-          type="text"
-          id="new-todo-control"
-          placeholder="What's to do next?"
-          hint="Press enter to create new task"
-          className="new-todo-control"
-          onChange={handleTodoControlChange}
-          onKeyUp={handleTodoControlKeyUp} />
-        {props.loading && loadingSpinnerElem}
+        <div className="d-flex">
+          {props.todoCompleted != null && (
+            <div className="pt-2">
+              <Checkbox
+                checked={props.todoCompleted}
+                onChange={handleCheckboxChange}
+                id="todo-editor-toolbar" />
+            </div>)
+          }
+          <div className="w-100">
+            <FormField
+              type="text"
+              id="new-todo-control"
+              placeholder="What's to do next?"
+              hint="Press enter to save"
+              className="new-todo-control"
+              value={todoTitle}
+              onChange={handleTodoControlChange}
+              onKeyUp={handleTodoControlKeyUp} />
+            {props.loading && loadingSpinnerElem}
+          </div>
+        </div>
       </div>
     </div>
   )

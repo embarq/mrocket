@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRouteMatch, Redirect } from 'react-router-dom';
+import { Redirect, RouteChildrenProps } from 'react-router-dom';
 
 import { TasksService } from '../lib/tasks-service';
 import TaskTrackerLayout from '../layout/TaskTrackerLayout';
@@ -8,7 +8,12 @@ import TaskTrackerEditorToolbar from '../components/task-tracker/TaskTrackerEdit
 import TaskTrackerEditorFooterControls from '../components/task-tracker/TaskTrackerEditorFooterControls';
 import './TaskTrackerEditorPage.css';
 
-export type TaskTrackerEditorPageProps = {};
+interface TaskTrackerEditorRouteParams {
+  taskId: string;
+}
+
+export type TaskTrackerEditorPageProps = RouteChildrenProps<TaskTrackerEditorRouteParams> & {
+};
 
 interface TaskTrackerEditorPageState {
   loading: boolean;
@@ -21,6 +26,7 @@ interface TaskFormState {
   title: string;
   description: string | null;
   dueDate: any;
+  completed: boolean | null;
 }
 
 const initialPageState: TaskTrackerEditorPageState = {
@@ -41,13 +47,13 @@ function TaskTrackerEditorPage(props: TaskTrackerEditorPageProps) {
     id: null,
     title: '',
     description: null,
-    dueDate: null
+    dueDate: null,
+    completed: null
   });
 
   const handleSaveTask = () => {
     const taskPayload = {
-      ...taskFormState,
-      completed: false
+      ...taskFormState
     };
 
     setPageState({
@@ -56,8 +62,11 @@ function TaskTrackerEditorPage(props: TaskTrackerEditorPageProps) {
       loadingError: null
     });
 
-    TasksService.Instance
-      .upsertTask(taskPayload)
+    const action = pageMode === TaskTrackerEditorPageMode.Edit
+      ? TasksService.Instance.updateTask(taskFormState.id as string, taskPayload as any)  // FIXME: taskPayload typings
+      : TasksService.Instance.createTask({ ...taskPayload, completed: false })
+
+    action
       .then((res) => {
         setTaskFormState({
           ...taskFormState,
@@ -97,6 +106,13 @@ function TaskTrackerEditorPage(props: TaskTrackerEditorPageProps) {
         [formField]: event.target.value
       });
     }
+  
+  const handleComplete = (completed: boolean) => {
+    setTaskFormState({
+      ...taskFormState,
+      completed
+    });
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -104,19 +120,49 @@ function TaskTrackerEditorPage(props: TaskTrackerEditorPageProps) {
   }
 
   const handleDelete = () => {
-    console.log('[TaskTrackerEditorPage:handleDelete]');
+    setPageState({
+      ...pageState,
+      loading: true
+    });
+
+    TasksService.Instance.deleteTask(taskFormState.id as string).then(() => {
+      setPageState({
+        ...pageState,
+        loading: false,
+        loadingSuccess: true
+      });
+    });
   }
 
-  const { params } = useRouteMatch<{taskId: string}>();
-  const nextPageMode = params.taskId === 'new' ? TaskTrackerEditorPageMode.Create : TaskTrackerEditorPageMode.Edit;
+  const { taskId: taskIdParam } = props.match?.params as TaskTrackerEditorRouteParams;
+  const nextPageMode = taskIdParam === 'new' ? TaskTrackerEditorPageMode.Create : TaskTrackerEditorPageMode.Edit;
 
   if (pageMode !== nextPageMode) {
     setPageMode(nextPageMode);
 
-    if (nextPageMode === TaskTrackerEditorPageMode.Edit) {
-      setTaskFormState({
-        ...taskFormState,
-        id: params.taskId
+    if (
+      nextPageMode === TaskTrackerEditorPageMode.Edit &&
+      taskFormState.id == null &&
+      !pageState.loading
+    ) {
+      setPageState({
+        ...pageState,
+        loading: true
+      });
+
+      TasksService.Instance.getTask(taskIdParam).then(task => {
+        setPageState({
+          ...pageState,
+          loading: false
+        });
+        setTaskFormState({
+          ...taskFormState,
+          id: taskIdParam,
+          title: task.title,
+          description: task.description,
+          dueDate: task.dueDate,
+          completed: task.completed
+        });
       });
     }
   }
@@ -133,8 +179,14 @@ function TaskTrackerEditorPage(props: TaskTrackerEditorPageProps) {
   }
 
   return (
-    <TaskTrackerLayout toolbarChildren={
-      <TaskTrackerEditorToolbar onTaskAdd={handleToolbarTaskAdd} onTitleChange={handleTitleChange} loading={ pageState.loading } />
+    <TaskTrackerLayout toolbar={
+      <TaskTrackerEditorToolbar
+        todoCompleted={taskFormState.completed}
+        todoTitle={taskFormState.title}
+        onComplete={handleComplete}
+        onTaskAdd={handleToolbarTaskAdd}
+        onTitleChange={handleTitleChange}
+        loading={pageState.loading} />
     }>
       <form onSubmit={handleSubmit} className="card border-0">
         <div className="card-body">
@@ -143,6 +195,7 @@ function TaskTrackerEditorPage(props: TaskTrackerEditorPageProps) {
               onChange={handleFormFieldChange('description')}
               controlType="textarea"
               label="Description"
+              value={taskFormState.description}
               id="todo-description"
               disabled={pageState.loading}
               placeholder="Describe your next task" />
@@ -163,7 +216,7 @@ function TaskTrackerEditorPage(props: TaskTrackerEditorPageProps) {
           </div>
         </div>
         <div className="card-footer border-0 bg-app-primary">
-          <div className="d-flex justify-content-end">
+          <div className="d-flex justify-content-between">
             <TaskTrackerEditorFooterControls
               mode={pageMode as TaskTrackerEditorPageMode}
               loading={pageState.loading}

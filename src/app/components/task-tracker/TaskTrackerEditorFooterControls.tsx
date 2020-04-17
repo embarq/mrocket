@@ -38,11 +38,11 @@ function TaskTrackerEditorFooterControls(props: TaskTrackerEditorFooterControlsP
       <button onClick={handleDelete} type="button" className="btn btn-white text-danger">
         {props.loading && loadingSpinnerElem}
         Delete
-        </button>
+      </button>
       <button type="submit" className="btn btn-white text-info">
         {props.loading && loadingSpinnerElem}
         Save
-        </button>
+      </button>
     </React.Fragment>
   )
 }
