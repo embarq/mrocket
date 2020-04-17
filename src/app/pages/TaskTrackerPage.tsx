@@ -8,7 +8,7 @@ import TaskTrackerContainer from '../components/task-tracker/TaskTrackerContaine
 
 function TaskTrackerPage() {  
   return (
-    <TaskTrackerLayout toolbarChildren={<TaskTrackerToolbar />}>
+    <TaskTrackerLayout toolbar={<TaskTrackerToolbar />}>
       <div className="card">
         <div className="card-body">
           <TaskTrackerContainer />
