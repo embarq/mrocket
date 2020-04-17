@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import './FormField.css';
+import { isValidString } from '../../lib/utils';
 
 type ControlProps = {
   [key: string]: any;
@@ -41,8 +42,9 @@ export interface FormFieldProps {
 
 function FormField(props: FormFieldProps) {
   const [controlValue, setControlValue] = useState('');
-  const [isFirstRender, setIsFirstRender] = useState(true);
+  const [isInitialValueSet, setInitialValue] = useState(false);
   const [isLabelActive, setLabelActive] = useState(false);
+  const [isControlFocused, setControlFocused] = useState(false);
 
   const defaultProps: Partial<FormFieldProps> = {
     type: 'text',
@@ -60,12 +62,9 @@ function FormField(props: FormFieldProps) {
   }
   const finalProps: FormFieldProps = { ...defaultProps, ...props.config, ...props };
 
-  if (isFirstRender) {
-    setIsFirstRender(false);
-
-    if (typeof finalProps.value === 'string' && finalProps.value.trim().length > 0) {
-      setControlValue(finalProps.value);
-    }
+  if (!isInitialValueSet && isValidString(finalProps.value)) {
+    setInitialValue(true);
+    setControlValue(finalProps.value);
   }
 
   const handleControlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,8 +85,14 @@ function FormField(props: FormFieldProps) {
     }
   }
 
-  const handleControlFocus = () => setLabelActive(true);
-  const handleControlBlur = () => setLabelActive(false);
+  const handleControlFocus = () => {
+    setControlFocused(true);
+    setLabelActive(true);
+  };
+  const handleControlBlur = () => {
+    setControlFocused(false);
+    setLabelActive(false);
+  }
 
   const isEmptyField = controlValue.trim().length === 0;
   const controlProps = {
@@ -116,7 +121,8 @@ function FormField(props: FormFieldProps) {
         </label>
     }
     <Control controlType={finalProps.controlType} controlProps={controlProps} />
-    {finalProps.hint && !isEmptyField && <small className="px-2 text-muted">{finalProps.hint}</small>}
+    {(finalProps.hint && !isEmptyField && isControlFocused) &&
+      <small className="px-2 text-muted">{finalProps.hint}</small>}
   </React.Fragment>
 }
 
