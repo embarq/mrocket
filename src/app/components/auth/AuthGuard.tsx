@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AuthService } from '../lib/auth-service';
+import { AuthService } from '../../lib/auth-service';
 
 export interface AuthGuardProps {
   unauthorizedRedirect: string;

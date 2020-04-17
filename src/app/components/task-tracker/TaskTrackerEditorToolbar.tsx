@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import FormField from './FormField';
+import FormField from '../shared/FormField';
 import './TaskTrackerEditorToolbar.css';
-import { isValidString, isFunction } from '../lib/utils';
+import { isValidString, isFunction } from '../../lib/utils';
 
 interface TaskTrackerMicroEditorProps {
   loading?: boolean;

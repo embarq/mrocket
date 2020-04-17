@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 
 import { AuthService } from '../lib/auth-service';
-import Alert from '../components/Alert';
-import FormField from '../components/FormField';
+import Alert from '../components/shared/Alert';
+import FormField from '../components/shared/FormField';
 import './RegisterPage.css';
 
 interface RegisterPageState {

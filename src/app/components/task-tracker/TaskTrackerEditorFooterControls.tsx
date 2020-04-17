@@ -1,6 +1,6 @@
 import React from 'react';
-import { TaskTrackerEditorPageMode } from '../pages/TaskTrackerEditorPage';
-import { isFunction } from '../lib/utils';
+import { TaskTrackerEditorPageMode } from '../../pages/TaskTrackerEditorPage';
+import { isFunction } from '../../lib/utils';
 
 interface TaskTrackerEditorFooterControlsProps {
   mode: TaskTrackerEditorPageMode,

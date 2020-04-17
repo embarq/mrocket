@@ -9,7 +9,7 @@ import TaskTrackerPage from '../pages/TaskTrackerPage';
 import TaskTrackerEditorPage from '../pages/TaskTrackerEditorPage';
 
 import './TaskTrackerLayoutContainer.css';
-import AppHeader from '../components/AppHeader';
+import AppHeader from './AppHeader';
 
 function TaskTrackerLayoutContainer() {
   const { path } = useRouteMatch();

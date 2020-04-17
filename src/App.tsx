@@ -5,8 +5,8 @@ import {
   Route
 } from "react-router-dom";
 
-import AuthGuardRedirect from './app/components/AuthGuardRedirect';
-import AuthGuard from './app/components/AuthGuard';
+import AuthGuardRedirect from './app/components/auth/AuthGuardRedirect';
+import AuthGuard from './app/components/auth/AuthGuard';
 import AuthLayoutContainer from './app/layout/AuthLayoutContainer';
 import TaskTrackerLayoutContainer from './app/layout/TaskTrackerLayoutContainer';
 

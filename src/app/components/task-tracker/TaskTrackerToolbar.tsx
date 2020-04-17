@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SortModeControl from './SortModeControl';
+import SortModeControl from '../shared/SortModeControl';
 import './TaskTrackerToolbar.css';
 
 function TaskTrackerToolbar() {

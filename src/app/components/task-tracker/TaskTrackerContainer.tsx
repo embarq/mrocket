@@ -1,10 +1,10 @@
 import React from 'react';
 
 import compareDesc from 'date-fns/compareDesc';
-import { TaskResource, RemoteTaskResource } from '../model/task.model';
-import { TasksService } from '../lib/tasks-service';
-import { isFunction, timestampToMilliseconds } from '../lib/utils';
-import { QueryChangeObserver } from '../lib/firestore-query-observer';
+import { TaskResource, RemoteTaskResource } from '../../model/task.model';
+import { TasksService } from '../../lib/tasks-service';
+import { isFunction, timestampToMilliseconds } from '../../lib/utils';
+import { QueryChangeObserver } from '../../lib/firestore-query-observer';
 import TaskTrackerList from './TaskTrackerList';
 
 interface TaskTrackerContainerProps {

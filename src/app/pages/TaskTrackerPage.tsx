@@ -3,8 +3,8 @@ import React from 'react';
 import './TaskTrackerPage.css';
 
 import TaskTrackerLayout from '../layout/TaskTrackerLayout';
-import TaskTrackerToolbar from '../components/TaskTrackerToolbar';
-import TaskTrackerContainer from '../components/TaskTrackerContainer';
+import TaskTrackerToolbar from '../components/task-tracker/TaskTrackerToolbar';
+import TaskTrackerContainer from '../components/task-tracker/TaskTrackerContainer';
 
 function TaskTrackerPage() {  
   return (

@@ -3,9 +3,9 @@ import { useRouteMatch, Redirect } from 'react-router-dom';
 
 import { TasksService } from '../lib/tasks-service';
 import TaskTrackerLayout from '../layout/TaskTrackerLayout';
-import FormField from '../components/FormField';
-import TaskTrackerEditorToolbar from '../components/TaskTrackerEditorToolbar';
-import TaskTrackerEditorFooterControls from '../components/TaskTrackerEditorFooterControls';
+import FormField from '../components/shared/FormField';
+import TaskTrackerEditorToolbar from '../components/task-tracker/TaskTrackerEditorToolbar';
+import TaskTrackerEditorFooterControls from '../components/task-tracker/TaskTrackerEditorFooterControls';
 import './TaskTrackerEditorPage.css';
 
 export type TaskTrackerEditorPageProps = {};

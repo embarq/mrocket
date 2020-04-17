@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import './LoginPage.css';
 import { AuthService } from '../lib/auth-service';
-import FormField from '../components/FormField';
-import Alert from '../components/Alert';
+import FormField from '../components/shared/FormField';
+import Alert from '../components/shared/Alert';
 
 interface LoginPageState {
   loading: boolean,

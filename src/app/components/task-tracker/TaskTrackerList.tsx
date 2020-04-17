@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TaskResource } from '../model/task.model';
+import { TaskResource } from '../../model/task.model';
 import TaskTrackerListItem from './TaskTrackerListItem';
 import { TaskTrackerItemUpdateActions } from './TaskTrackerContainer';
 import './TaskTrackerList.css';

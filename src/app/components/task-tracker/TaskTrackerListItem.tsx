@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { TaskResource } from '../model/task.model';
-import { getDistanceToNow } from '../lib/utils';
+import { TaskResource } from '../../model/task.model';
+import { getDistanceToNow } from '../../lib/utils';
 import { TaskTrackerItemUpdateActions } from './TaskTrackerContainer';
-import Checkbox from './Checkbox';
+import Checkbox from '../shared/Checkbox';
 import './TaskTrackerListItem.css';
 
 interface TaskTrackerListItemProps extends TaskTrackerItemUpdateActions {
