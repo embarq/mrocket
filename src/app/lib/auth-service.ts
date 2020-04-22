@@ -45,9 +45,7 @@ export class AuthService {
   }
 
   logout() {
-    return this.auth
-      .signOut()
-      .then(() => FirebaseService.Instance.getFirestore().clearPersistence())
+    return this.auth.signOut();
   }
 
   register(user: Partial<FirebaseUser> & { password: string, email: string }) {

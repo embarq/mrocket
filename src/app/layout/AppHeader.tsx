@@ -1,9 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { AuthService } from '../lib/auth-service';
 
 import './AppHeader.css';
 
 function AppHeader() {
+  const history = useHistory();
+
+  const onLogout = () => {
+    AuthService.Instance.logout()
+      .then(() => {
+        history.push('/auth/login');
+      })
+      .catch(err => console.error(err));
+  }
+
   return (
     <header className="container" id="app-header">
       <nav className="navbar navbar-dark bg-transparent">
@@ -21,7 +32,7 @@ function AppHeader() {
             </button>
           </li>
           <li className="nav-item">
-            <button type="button" className="btn nav-link">
+            <button onClick={onLogout} type="button" className="btn nav-link">
               Logout
             </button>
           </li>
