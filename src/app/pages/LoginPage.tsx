@@ -107,7 +107,7 @@ function LoginPage() {
       <div className="card-footer pt-0 bg-white border-0">
         <div className="d-flex justify-content-between">
           <Link to="/auth/register" className="btn btn-info" tabIndex={4}>Register</Link>
-          <button onClick={handleLoginSubmit} type="submit" className="btn btn-primary" tabIndex={3}>
+          <button onClick={handleLoginSubmit} type="submit" className="btn bg-app-primary text-white" tabIndex={3}>
             Login
             { loginPageState.loading &&
               <span className="spinner-border spinner-border-sm ml-2" role="status"></span> }

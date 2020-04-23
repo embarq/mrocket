@@ -152,7 +152,7 @@ function RegisterPage(props: React.PropsWithChildren<RegisterPageProps>) {
       <div className="card-footer pt-0 bg-white border-0">
         <div className="d-flex justify-content-between">
           <Link to="/auth/login" tabIndex={7} className="btn btn-info">Login</Link>
-          <button onClick={handleFormSubmit} tabIndex={6} type="submit" className="btn btn-primary">
+          <button onClick={handleFormSubmit} tabIndex={6} type="submit" className="btn bg-app-primary text-white">
             Register
             { registerPageState.loading &&
               <span className="spinner-border spinner-border-sm ml-2" role="status"></span> }
