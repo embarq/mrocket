@@ -114,10 +114,10 @@ function FormField(props: FormFieldProps) {
   return <React.Fragment>
     {
       finalProps.label
-      && <label
-          htmlFor={finalProps.id}
-          className={isLabelActive ? 'active' : ''}>
-          {finalProps.label}
+      && <label htmlFor={finalProps.id}>
+          <span className={'form-field-label-text' + (isLabelActive ? ' form-field-label-active' : '')}>
+            {finalProps.label}
+          </span>
         </label>
     }
     <Control controlType={finalProps.controlType} controlProps={controlProps} />
